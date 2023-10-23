@@ -3,55 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basic Post System</title>
+    <title>Chat with Friend</title>
     <style>
         /* Basic CSS styling */
         body {
-            font-family: Arial, sans-serif;
+            font-family: Monaco, monospace;
             margin: 0;
             padding: 20px;
             background-color: #f0f0f0;
         }
 
-        .post-container {
+        .chat-container {
             max-width: 600px;
             margin: 0 auto;
             background-color: #fff;
-            padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            height: 400px;
+            overflow-y: scroll;
         }
 
-        .post {
-            border: 1px solid #ccc;
-            margin-bottom: 10px;
+        .message {
+            background-color: #f9f9f9;
             padding: 10px;
             border-radius: 5px;
-            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            max-width: 80%;
+        }
+
+        .input-container {
+            display: flex;
+        }
+
+        #messageInput {
+            flex-grow: 1;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        #sendButton {
+            padding: 8px 16px;
+            border: none;
+            background-color: #0066cc;
+            color: #fff;
+            border-radius: 5px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-    <div class="post-container">
-        <h1>Create a New Post</h1>
-        <textarea id="postContent" rows="4" cols="50"></textarea>
-        <button onclick="createPost()">Post</button>
-        
-        <div id="postList">
-            <!-- Posts will be displayed here -->
-        </div>
+    <div class="chat-container" id="chatContainer">
+        <!-- Chat messages will be displayed here -->
+    </div>
+    <div class="input-container">
+        <input type="text" id="messageInput" placeholder="Type a message...">
+        <button id="sendButton">Send</button>
     </div>
 
     <script>
-        function createPost() {
-            var postContent = document.getElementById("postContent").value;
-            if (postContent.trim() !== "") {
-                var postElement = document.createElement("div");
-                postElement.classList.add("post");
-                postElement.textContent = postContent;
+        document.getElementById('sendButton').addEventListener('click', function() {
+            sendMessage();
+        });
 
-                document.getElementById("postList").appendChild(postElement);
-                document.getElementById("postContent").value = "";
+        document.getElementById('messageInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            var messageInput = document.getElementById('messageInput');
+            var chatContainer = document.getElementById('chatContainer');
+            var messageText = messageInput.value.trim();
+
+            if (messageText !== '') {
+                var messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+                messageElement.textContent = messageText;
+
+                chatContainer.appendChild(messageElement);
+
+                // Scroll to the bottom of the chat container
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+
+                // Clear the input field
+                messageInput.value = '';
             }
         }
     </script>
